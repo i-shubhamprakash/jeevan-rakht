@@ -5,15 +5,14 @@ var {findByEmail} = require('../../controllers/userController');
 var {generate_token} = require('../../controllers/tokenController');
 
 router.get('/', function(req, res, next) {
-	partials = req.app.get('partials');
-	res.render('auth/forgot', { title: 'Forgot password',partials: partials});
+	res.render('auth/forgot', { title: 'Forgot password'});
 });
 router.post('/', function(req, res, next) {
 	// Make sure this account already exist
 	var in_email = req.body.email;
 	if(!in_email){
 		var message = 'Invalid Email.';
-		res.render('auth/forgot', { title: 'Forgot password',partials: req.app.get('partials'), alertMessage: message});
+		res.render('auth/forgot', { title: 'Forgot password', alertMessage: message});
 		return;
 	}
 	findByEmail(req.body.email, function(err, user) {
@@ -23,10 +22,10 @@ router.post('/', function(req, res, next) {
 		}
 		if(!user){
 			var message = 'The email address you have entered is not registered.';
-			res.render('auth/forgot', { title: 'Forgot password',partials: req.app.get('partials'), alertMessage: message});
+			res.render('auth/forgot', { title: 'Forgot password', alertMessage: message});
 			return;			
 		}
-		// Create a verification token for this user
+		// Create a reset password token for this user
 		generate_token(user,function(err, token){
 			if (err) {
 				return res.status(500).send({ "error": err.message }); 
@@ -43,14 +42,14 @@ router.post('/', function(req, res, next) {
 			var mailOptions = { 
 				from: 'no-reply@jeevanrakht.in', 
 				to: user.email, 
-				subject: 'Account Verification Token', 
-				text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \n'+req.protocol+':\/\/' + req.headers.host + '\/forgot_finish?token=' + token.token + '.\n' 
+				subject: 'Password reset/change Token', 
+				text: 'Hello,\n\n' + 'Please update your password by clicking the link: \n'+req.protocol+':\/\/' + req.headers.host + '\/forgot_finish?token=' + token.token + '.\n' 
 			};
 			client.sendMail(mailOptions, function (err) {
 				if (err) { 
 					return res.status(500).send({ "error": err.message }); 
 				}
-				req.flash('successMessage', 'A verification email has been sent to ' + user.email + '.');
+				req.flash('successMessage', 'A reset link has been sent to ' + user.email + '.');
 				res.redirect('/login');				
 			});
 		});
