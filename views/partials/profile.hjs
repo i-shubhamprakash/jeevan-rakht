@@ -1,0 +1,68 @@
+{{#indivUser}}
+<div class="form-row input-wrapper">
+    <div class="form-group col-md-6">
+        <input type="text" class="form-control" name="firstname" id="fname" aria-describedby="fnameHelp" placeholder="First Name">
+    </div>
+    <div class="form-group col-md-6">
+        <input type="text" class="form-control" name="lastname" id="lname" aria-describedby="lnameHelp" placeholder="Last Name">    
+    </div>
+</div>
+<div class="form-row input-wrapper">
+    <div class="form-group col-md-3">
+        <input type="text" class="form-control" name="bloodgroup" id="bloodgroup" placeholder="Blood Group">
+    </div>
+    <div class="form-group col-md-3">
+        <select class="form-control" id="gender">
+            <option>select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Others</option>
+        </select>
+    </div>
+    <div class="form-group col-md-6">
+        <input type="mobile" class="form-control" name="mobile" id="mobile" placeholder="Mobile">
+    </div>
+</div>
+<div class="form-row input-wrapper">
+    <div class="form-group col-md-3">
+        <input type="number" class="form-control" name="age" id="age" min="18" max="65" placeholder="Age(in years)">
+    </div>
+    <div class="form-group col-md-3">
+        <input type="number" class="form-control" name="height" id="height" min="60" placeholder="Height(in cm)">
+    </div>
+    <div class="form-group col-md-3">
+        <input type="number" class="form-control" name="weight" id="weight" min="40" placeholder="Weight(in kg)">
+    </div>    
+</div>
+<div class="form-row input-wrapper">
+    <div class="form-group col-md-6">
+        <input class="input-donation-date" name="last-donationdate" id="last-donationdate" placeholder="Last Donation Date">
+        <i class="far fa-calendar-alt"></i>
+    </div>
+</div>
+{{/indivUser}}
+{{^indivUser}}
+<div class="form-row input-wrapper">
+    <div class="form-group col-md-6">
+        <input id="orgname" type="text" class="form-control" name="orgname" value="{{user.non_indiv.org_name}}" placeholder="bank name">
+    </div>
+</div>
+<div class="form-row input-wrapper">
+    <div class="form-group col-md-6">
+        <input id="license" type="text" class="form-control" name="license" value="{{user.non_indiv.license}}" placeholder="license">
+    </div>
+    <div class="form-group col-md-6">
+        <input id="stock" type="number" class="form-control" name="stock" value="{{user.non_indiv.unit_stock}}" placeholder="blood stock">
+    </div>
+</div>
+{{/indivUser}}
+<div class="form-row input-wrapper">
+    <div class="form-group col-md-6">
+        {{#activeUser}}
+        <label for="email">Email (verified):</label>
+        {{/activeUser}}{{^activeUser}}
+        <label for="email">Email (not verified):</label>
+        {{/activeUser}}
+        <input type="email" class="form-control" name="email" id="email" value ="{{user.email}}" readonly>
+    </div>
+</div>
